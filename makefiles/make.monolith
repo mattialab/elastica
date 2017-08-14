@@ -1,0 +1,14 @@
+CC=/usr/local/Cellar/gcc/6.1.0/bin/g++-6
+
+CPPSETTINGS += -std=c++11 
+
+OPENMP_FLAG= -fopenmp
+
+TBB_INC_DIR=/usr/local/Cellar/tbb/4.4-20160128/include/
+TBB_LIB_DIR=/usr/local/Cellar/tbb/4.4-20160128/lib/
+
+CPPFLAGS+= -O3 -Wall -Wno-deprecated-declarations -Wno-reorder $(OPENMP_FLAG) -I$(TBB_INC_DIR)
+
+OPENGL_LIB=-framework OpenGL -framework GLUT /usr/local/Cellar/glew/1.13.0/lib/libGLEW.a
+
+LIB += $(OPENGL_LIB) $(OPENMP_FLAG) -L$(TBB_LIB_DIR) -ltbb -ltbbmalloc
