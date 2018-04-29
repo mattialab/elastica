@@ -14,7 +14,6 @@
 #include "InstabilityHelical.h"
 #include "MassSpringSystem.h"
 #include "MitchellBuckling.h"
-#include "TorsionalWavesCouple.h"
 #include "TorsionalWavesCoupleStretch.h"
 #include "RollingFrictionInitialVelocity.h"
 #include "RollingFrictionInclinedPlane.h"
@@ -23,9 +22,8 @@
 #include "QuasistaticTimoshenkoBeam.h"
 #include "SlenderBodyStokes.h"
 #include "Snake.h"
-#include "SolenoidsJCP.h"
 #include "Solenoids.h"
-#include "StigmaticStart.h"
+
 
 #ifdef SNAKE_VIZ
 #ifdef __APPLE__
@@ -103,16 +101,12 @@ int main(const int argc, const char** argv)
 		test = new EulerBeam(argc, argv);
 	else if( studycase == "SNAKE" )
 		test = new Snake(argc, argv);
-	else if( studycase == "STIGMATIC_START" )
-		test = new StigmaticStart(argc, argv);
 	else if( studycase == "MITCHELL_BUCKLING" )
 		test = new MitchellBuckling(argc, argv);
 	else if( studycase == "LOCALIZED_HELICAL_INSTABILITY" )
 		test = new InstabilityHelical(argc, argv);
 	else if( studycase == "MASS_SPRING_SYSTEM" )
 		test = new MassSpringSystem(argc, argv);
-	else if( studycase == "TORSIONAL_WAVES_COUPLE" )
-		test = new TorsionalWavesCouple(argc, argv);
 	else if( studycase == "TORSIONAL_WAVES_COUPLE_STRETCH" )
 		test = new TorsionalWavesCoupleStretch(argc, argv);
 	else if( studycase == "QUASISTATIC_TIMOSHENKO_BEAM" )
@@ -127,8 +121,6 @@ int main(const int argc, const char** argv)
 		test = new AxialFriction(argc, argv);
 	else if( studycase == "SLENDER_BODY_STOKES" )
 		test = new SlenderBodyStokes(argc, argv);
-	else if( studycase == "SOLENOIDS_JCP" )
-		test = new SolenoidsJCP(argc, argv);
 	else if( studycase == "SOLENOIDS" )
 		test = new Solenoids(argc, argv);
 	else
