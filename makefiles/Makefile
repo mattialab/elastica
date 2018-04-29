@@ -61,14 +61,11 @@ SNAKE_OBJS = \
 	MathFunctions.o \
 	EulerBuckling.o \
 	EulerBeam.o \
-	SolenoidsJCP.o \
 	Solenoids.o \
 	Snake.o \
-	StigmaticStart.o \
 	MitchellBuckling.o \
 	InstabilityHelical.o \
 	MassSpringSystem.o \
-	TorsionalWavesCouple.o \
 	TorsionalWavesCoupleStretch.o \
 	QuasistaticTimoshenkoBeam.o \
 	RollingFrictionInitialVelocity.o \
