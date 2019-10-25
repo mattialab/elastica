@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!plot_results.py
+!requirements.txt
+!docs/
+!README.org
+# etc...

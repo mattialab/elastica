@@ -10,14 +10,16 @@
 
 #include "PolymerIntegrator.h"
 
-class PositionVerlet2nd : public PolymerIntegrator
-{
-public:
-	PositionVerlet2nd(Vrodptr& _rodptrs, Vefptr& _efptrs, Vbcptr& _bcptrs, Vinterptr& _interptrs) : PolymerIntegrator(_rodptrs, _efptrs, _bcptrs, _interptrs){};
+class PositionVerlet2nd : public PolymerIntegrator {
+ public:
+  PositionVerlet2nd(Vrodptr &_rodptrs, Vefptr &_efptrs, Vbcptr &_bcptrs,
+                    Vinterptr &_interptrs, Vecptr &_ecptrs, Vscptr &_scptrs)
+      : PolymerIntegrator(_rodptrs, _efptrs, _bcptrs, _interptrs, _ecptrs,
+                          _scptrs){};
 
-	virtual ~PositionVerlet2nd(){};
+  virtual ~PositionVerlet2nd(){};
 
-	virtual REAL integrate(const REAL time, const REAL dt, const int step);
+  virtual REAL integrate(const REAL time, const REAL dt, const int step);
 };
 
 #endif /* POSITIONVERLET2ND_H_ */

@@ -1,0 +1,174 @@
+#+TITLE: Elastica
+#+DATE:<2019-09-06 Fri>
+
+[[https://github.com/mattialab/elastica/blob/master/LICENSE.txt][https://img.shields.io/badge/license-MIT-blue.svg]]
+[[https://en.wikipedia.org/wiki/C%2B%2B#Standardization][https://img.shields.io/badge/c%2B%2B-11-blue.svg]]
+
+Elastica is a software to simulate the dynamics of filaments that, at every
+cross-section, can undergo all six possible modes of deformation, allowing the
+filament to bend, twist, stretch and shear, while interacting with complex
+environments via muscular activity, surface contact, friction and hydrodynamics.
+
+This repository provides a prototyping, non-parallel (single threaded, single node)
+code in ~C++~ that supplements the paper "Modeling and simulation of complex dynamic musculoskeletal architectures, Nature Communications, 2019."
+
+The code provided here is meant to be a tutorial into assembling and simulating active architectures similar to the ones in the above paper:
+
+  1. It presents a single Cosserat rod implementation according to the above paper and "Forward and inverse problems in the mechanics of soft filaments. Royal Society Open Science, 2018."
+
+  2. It illustrates the use of a single rod in the case of slithering snakes, and a comparison with the Timoshenko beam deflection to highlight the effect of shear.
+
+  3. It extends the use of single Cosserat rods to simple assemblies of rods, and presents three toy problems implementing the main joint connections employed in "Modeling and simulation of complex dynamic musculoskeletal architectures, Nat Comm, 2019."
+
+  4. It illustrates the assembly and simulation of dynamic musculoskeletal structures similar to those in the Nat Comm, 2019 (although not identical due to the use of a legacy code). An HPC version of Elastica will eventually replace this repository.
+
+The code has been tested with ~C++-11~-compliant ~gcc~ compilers
+from versions ~4.9.4~ and above on ~Linux~ and ~MacOS~. This version of the code is
+not optimized and non-parallel, so some examples are *slow* to run, we indicate
+this in the scripts provided.
+
+The code itself is distributed with a MIT License, but the authors retain
+copyright for the examples shown in this repository.
+
+* Quick-Use Guide
+  To understand the code, starting from the fundamental rod model used, boundary
+  conditions, connections between rods, we suggest taking the route below in running
+  and understanding cases (for a complete explanation, see the /Commands/ section below).
+
+** Basic tests to check the integrity of the Cosserat rod's core (individual rod)
+   1) timoshenkobeam in =QuasiStaticTimoshenkoBeam.cpp=
+   2) localized helical buckling in =InstabilityHelical.cpp=
+   3) snake in =Snake.cpp=
+
+**  Basic examples of rods' assembly (multiple rods)
+   1) sphericaljoint in =SphericalJoint.cpp=
+   2) hingejoint in =HingeJoint.cpp=
+   3) fixedjoint in =FixedJoint.cpp=
+   4) pullingmuscle in =PullingMuscle.cpp=
+
+	  When you reach this point, you should be able to assemble your own complex
+      structures. The examples below rely on the same concepts as the first six.
+
+** More complex architectures similar to the ones in the Nat Comm, 2019 paper
+   1) flagella in =Flagella.cpp=
+   2) muscularsnake in =MuscularSnake.cpp=
+   3) walker in =Walker.cpp=
+   4) elbow in =Elbow.cpp=
+   5) wing in =Wing.cpp=
+
+  For processing and plotting results from these cases, use the
+  ~plot_results.py~ script found in the ~scripts~ folder (see *Visualizing
+  Results* section
+  below and the ~README.org~ in the ~scripts~ folder for more information.
+
+* Usage
+  While the repo contains code to simulate individual rods by themselves, we
+  organized it to run several examples off-the-shelf.
+
+** Prerequisites
+   Our prerequisites are ~GNU Make~ and a ~C++-11~ compliant ~gcc~ compiler for
+   running the code (there are known bugs with other compilers, see the section
+   on /Bugs/ below). For visualizing the date, we use ~Python3~ (any version
+   should be fine) using ~numpy,scipy~ and ~matplotlib~ as packages (see
+   ~README.org~ file in the ~scripts~ folder for more details).
+
+** Installation
+   The Makefile provided can be used to compile one of many executables running
+   a specific case, like so:
+   #+begin_src sh
+	 cd makefiles
+	 make clean
+	 make -j8 # default target is elbow
+	 ./<name_of_executable>
+   #+end_src
+
+   For ease of use however, we provide a handy bash script that makes and runs
+   the provided examples:
+   #+begin_src sh
+	 cd makefiles
+	 ./run.sh <name_of_example>
+   #+end_src
+   The next section provides more details on using this script.
+
+** Commands
+   Upon running the ~run.sh~ with no arguments, it prints the following
+   descriptive help message:
+
+   #+begin_src sh
+	 usage
+	 -----
+	 ./run.sh <case_name>
+
+	 case_names and explanations
+	 ---------------------------
+	 help : Print this help message
+
+	 timoshenkobeam : Runs a cantilevered slender beam (clamped at the wall at one
+	 end, free at another) bending under the influence of a downward point force.
+	 We compare against analytical results using Timoshenko Beam theory.
+
+	 helicalbuckling : Runs the localized helical buckling benchmark which tests
+	 the mixed bending modes (two bending modes + twist mode). When an unstretchable
+	 rod is twisted at two ends, a characteristic instability arises which forms a
+	 localized helical shape at the center of the beam. There is an analytical solution
+	 (see Gazzola et. al, RSOS, 2018), which we compare against.
+
+	 snake : Runs an example of an snake, actuated by a continuum analytical bend-
+	 ing torque profile slithering on a plane-ground with anisotropic friction.
+	 This snake has been optimized for maximal forward speed.
+
+	 sphericaljoint : Runs an example of two rods connected by a spherical joint
+	 that allows for arbitrary rotations (see SphericalJoint.cpp)
+
+	 hingejoint : Runs an example of two rods connected by a hinge joint that
+	 allows for motion only along a constrained plane (see HingeJoint.cpp)
+
+	 fixedjoint : Runs an example of two rods connected by a fixed joint that
+	 does not allow any motion between the rods (see FixedJoint.cpp)
+
+	 pullingmuscle : Runs an example of two hanging vertical rods (connected to
+	 ground by a hinge) connected to each another's centers by a horizontal
+	 muscle. This muscle is actuated and pulls the rods together.
+	 (see PullingMuscle.cpp)
+
+	 elbow : Runs the injured elbow (50% Strength) with artificial muscles,
+	 as seen in Fig.7 in Supplementary Material.
+
+	 flagella : Runs the original biohybrid flagella design seen in Fig.2(a,b).
+
+	 walker : Runs the original biohybrid walker design at a frequency of 2 Hz,
+	 as seen in Fig.2(e,f). SLOW without parallelization.
+
+	 muscularsnake : Runs the muscular snake seen in Fig.3. SLOW without parallelization.
+
+	 wing : Runs the wing seen in Fig.4. EXTREMELY SLOW without parallelization.
+
+	 case_names
+	 ----------
+	 timoshenkobeam, helicalbuckling, sphericaljoint, hingejoint, fixedjoint, pullingmuscle, snake
+	 flagella, muscularsnake, walker, elbow, wing
+
+	 All results are stored in folder 'run_<case_name>' in the main directory
+   #+end_src
+
+   To run a specific example then (e.g. walker) type =./run.sh walker=.
+
+** Visualizing Results
+   To process the results using ~plot_results.py~, run
+   #+begin_src sh
+	 ./plot_results.py -c <case_name>
+   #+end_src
+   where the ~case_name~ is the same as before. This script visualizes
+   the data and saves the files automatically. More details in the ~README.org~
+   file in the ~scripts~ folder.
+
+** Known bugs
+   The code, at the moment, only works with ~gcc~ compiler family (Apple
+   ~clang~, source ~clang~, ~icc~ do not work). This will be corrected in the
+   near future. All examples in the paper are run with ~g++ 8.2.0~ with ~-O3~
+   optimization and user warnings.
+
+** Troubleshooting
+   Because of the above bugs, we hard-coded ~g++~ in line 5 of our ~Makefile~.
+   In case ~make~ throws an error during compile-time, the user is encouraged to
+   change the path of the ~CC~ executable in the ~Makefile~.

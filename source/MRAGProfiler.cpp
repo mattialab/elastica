@@ -7,36 +7,30 @@
  *
  */
 
-
-#include "MRAGEnvironment.h"
 #include "MRAGProfiler.h"
+#include "MRAGEnvironment.h"
 
 #ifdef _MRAG_TBB
 
 #include "tbb/tick_count.h"
 using namespace tbb;
 
-void MRAG::ProfileAgent::_getTime(tick_count& time)
-{
-	time = tick_count::now();
+void MRAG::ProfileAgent::_getTime(tick_count &time) {
+  time = tick_count::now();
 }
 
-float MRAG::ProfileAgent::_getElapsedTime(const tick_count& tS, const tick_count& tE)
-{
-	return (tE - tS).seconds();
+float MRAG::ProfileAgent::_getElapsedTime(const tick_count &tS,
+                                          const tick_count &tE) {
+  return (tE - tS).seconds();
 }
-	
+
 #else
 #include <time.h>
-void MRAG::ProfileAgent::_getTime(clock_t& time)
-{
-	time = clock();
-}
+void MRAG::ProfileAgent::_getTime(clock_t &time) { time = clock(); }
 
-float MRAG::ProfileAgent::_getElapsedTime(const clock_t& tS, const clock_t& tE)
-{
-	return (tE - tS)/(double)CLOCKS_PER_SEC;
+float MRAG::ProfileAgent::_getElapsedTime(const clock_t &tS,
+                                          const clock_t &tE) {
+  return (tE - tS) / (double)CLOCKS_PER_SEC;
 }
 
 #endif
-	

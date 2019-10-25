@@ -8,42 +8,32 @@
 #ifndef SNAKE_H_
 #define SNAKE_H_
 
-#include "UsualHeaders.h"
-#include "Test.h"
 #include "ArgumentParser.h"
-#include "InterfaceCma.h"
-#include "RodInitialConfigurations.h"
 #include "Polymer.h"
 #include "PositionVerlet2nd.h"
+#include "RodInitialConfigurations.h"
+#include "Test.h"
+#include "UsualHeaders.h"
 
 using namespace std;
 
-class Snake: public Test
-{
-protected:
-	vector <double> amp;
-	double w, v;
-	double ncycles;
-	unsigned int framesPerUnitTime;
+class Snake : public Test {
+ protected:
+  vector<double> amp;
+  double w, v;
 
-	MRAG::ArgumentParser parser;
-	InterfaceCma interfaceCma;
-
-	REAL _snakeRun();
+  REAL _snakeRun();
 
 #ifdef SNAKE_VIZ
-	void _paint(){};
+  void _paint(){};
 #endif
 
-public:
+ public:
+  Snake(const int argc, const char **argv);
+  ~Snake(){};
 
-	Snake(const int argc, const char ** argv);
-	~Snake(){};
-
-	void run();
-	void paint(){};
+  void run();
+  void paint(){};
 };
-
-
 
 #endif /* SNAKE_H_ */

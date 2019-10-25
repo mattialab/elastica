@@ -1,0 +1,77 @@
+#+TITLE: Visualizing Results
+#+DATE:<2019-09-13 Fri>
+You can use the ~plot_results.py~ script provided in the folder. Default usage
+is
+#+begin_src sh
+./plot_results.py -c <case_name>
+#+end_src
+where ~case_name~ is one of ~timoshenkobeam, sphericaljoint, hingejoint, fixedjoint,
+pullingmuscle, snake, flagella, muscularsnake, walker, elbow, wing~, the same as
+~run.sh~. For more details, see the *Usage* section below.
+
+For the simple and instructive cases involving O(1) rods, we provide 3D animated
+plots visualizing the rod trajectory.
+
+[[file:docs/demo.gif]]
+
+For the more complicated cases provided in our Nature Communications manuscript,
+we display dynamically updating 2D plots that reproduce those found in our paper.
+
+* Installing prerequisites
+  To install prerequisites for running the script, do
+  #+begin_src sh
+	pip install -r requirements.txt
+  #+end_src
+  This installs the ~numpy,scipy~ and ~matplotlib~ scientific stack on your
+  system.
+
+* Usage
+  The script has more arguments that may be useful. Running the script without
+  any arguments reproduces the following message too. Note that the default
+  behavior of the script is to only plot new data (as it updates)!
+  #+begin_src sh
+	  usage: plot_results.py [-h]
+						   [-c {timoshenkobeam,sphericaljoint,hingejoint,fixedjoint,pullingmuscle,snake,elbow,flagella,walker,muscularsnake,wing}]
+						   [-o OUTFILE] [-p OUTPATH] [-f] [-a] [-n]
+
+	Plots data associated with Elastica simulations
+
+	Used to reproduce various figures and renderings (in-part)
+	from the paper:
+	Modeling and simulation of complex dynamic musculoskeletal architectures
+	Nature Communications, 2019
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -c {timoshenkobeam,sphericaljoint,hingejoint,fixedjoint,pullingmuscle,snake,elbow,flagella,walker,muscularsnake,wing}, --case {timoshenkobeam,sphericaljoint,hingejoint,fixedjoint,pullingmuscle,snake,elbow,flagella,walker,muscularsnake,wing}
+							simulation case whose output needs to be seen
+							(default: None)
+	  -o OUTFILE, --output OUTFILE
+							if enabled, stores the images as
+							OUTFILE_{1,2,...,N}.png/pdf, in the
+							scripts/pyprocessed_<case> directory (default: out)
+	  -p OUTPATH, --path OUTPATH
+							path to store output files, is default created to
+							pyprocessed_case if not initialized (default:
+							./pyprocessed)
+	  -f, --force           force rewrite of any previously saved images (default:
+							False)
+	  -a, --animate         force collate pngs (ffmpeg) after saving them
+							(default: False)
+	  -n, --nodisp          do not render images on the screen but only save
+							(faster!) (default: False)
+
+  #+end_src
+
+* Troubleshooting
+  - If you get the following error:
+	#+begin_src sh
+	  File "./plot_results.py", line 760, in __init__
+	  self.files_to_be_processed[index] = temp.pop()
+	  IndexError: pop from empty list
+	#+end_src
+	you should wait for some time before running the script again as this
+	indicates that the appropriate file that the script read is either empty or
+	has not been created yet.
+  - If you see an empty plot, try moving it to another part of the screen.
+    Chances are that there is another plot behind that displays information.
