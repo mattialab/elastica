@@ -65,7 +65,7 @@ run_t/
 run_*/
 
 # executables
+makefiles/*
 !makefiles/test_make.sh
-makefiles
 !makefiles/run.sh
 !makefiles/Makefile
